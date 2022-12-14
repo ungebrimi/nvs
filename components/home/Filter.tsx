@@ -1,9 +1,7 @@
-import { useState, useMemo, useCallback, useEffect } from "react"
 import { Disclosure } from "@headlessui/react";
 import { FiLock } from "react-icons/fi";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { CheckIcon } from "@heroicons/react/24/outline";
-import { useStoreFilter } from "../../hooks/useStoreFilter"
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import { getProductsView, addImagesToProductsFeed } from '../../utils/products'
+import Popup from '../../components/home/Popup';
 import Image from 'next/image'
 import Pagination from "../../components/Pagination";
 import {
@@ -11,15 +12,15 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
+import { getStoreById } from '../../utils/store';
 
 export async function getStaticProps() {
-  const products = await getProductsView().then(async (res: any) => {
-    const p = await addImagesToProductsFeed(res)
-    return res
-  })
+  const products = await getProductsView()
+  const p = await addImagesToProductsFeed(products)
+
   return {
     props: {
-      p: products,
+      p: p,
     },
   }
 }
@@ -55,15 +56,31 @@ const Index = ({ p }: any) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<any>(p)
-  const [initialProducts, setInitalProducts] = useState<any>(p)
   const [currentProducts, setCurrentProducts] = useState<any>([]);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<any>({});
   const [activeFilters, setActiveFilters] = useState<any>([]);
   const [filters, setFilters] = useState<any>(arr);
   const [sortOptions, setSortOptions] = useState<any>(sort);
+  const [store, setStore] = useState<any>([])
+  const initialProducts = p;
 
-  let PageSize = 12;
+  const addStore = async (pid: any) => {
+    if (pid !== undefined) {
+      try {
+        const store = await getStoreById(pid)
+        return store
+      } catch (err: any) {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    addStore(selectedProduct.product_id).then(res => setStore(res))
+  }, [selectedProduct])
+
+  let PageSize = 10;
 
   const infiniteScroll = (data: any, limit: number, page: any) => {
     const ending = limit * page;
@@ -216,7 +233,7 @@ const Index = ({ p }: any) => {
     if (sortOptions[2].current) {
       setProducts([...products].sort((a, b) => b.price - a.price));
     }
-  }, [sortOptions]);
+  }, [sortOptions, initialProducts, products]);
 
   return (
     <div className="bg-warm-gray">
@@ -561,6 +578,15 @@ const Index = ({ p }: any) => {
           </div>
         </section>
         <>
+          {isOpen ? (
+            <Popup
+              open={isOpen}
+              setOpen={setIsOpen}
+              product={selectedProduct}
+              id={selectedProduct.id}
+              store={store}
+            />
+          ) : null}
         </>
       </main>
     </div>

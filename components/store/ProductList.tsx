@@ -64,7 +64,7 @@ export default function ProductList({ p, f, store }: any) {
     } else {
       setProducts(p);
     }
-  }, [activeFilters]);
+  }, [activeFilters, p]);
 
   const handleCheck = (option: any) => {
     // filter the options. where the option is the same as the one that was clicked, change the checked value to the opposite of what it was

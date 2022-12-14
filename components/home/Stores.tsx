@@ -1,6 +1,7 @@
 import Link from "next/link";
 import LikeButtons from "../LikeButtons";
 import Image from "next/image";
+import { useMap } from "../../context/MapContext";
 
 const Stores = ({ stores }: any) => {
   // get current day and time
@@ -47,18 +48,18 @@ const Stores = ({ stores }: any) => {
       value: "green",
     },
   ];
-  //
-  // //function to set maplocation and fly to true
-  // const handleFly = (store: any) => {
-  //   setMapLocation({
-  //     latitude: store.lat,
-  //     longitude: store.lng,
-  //   });
-  //   setFly(true);
-  // };
-  //
+
+  const { setFly, setMapLocation } = useMap()
+  const handleFly = (store: any) => {
+    setMapLocation({
+      latitude: store.lat,
+      longitude: store.lng,
+    });
+    setFly(true);
+  };
+
   return (
-    <aside className="flex col-span-6 lg:col-span-2 lg:h-[36rem] overflow-auto justify-center relative flex-wrap py-1 gap-4">
+    <aside className="col-span-6 bg-neutral-50 lg:col-span-2 lg:h-[36rem] overflow-auto relative py-1">
       {stores &&
         stores.map((store: any) => {
           let isOpen = false;
@@ -92,11 +93,13 @@ const Stores = ({ stores }: any) => {
           return (
             <div
               key={store.store_id}
-              className="flex relative w-full max-w-md bg-white rounded-md shadow-md"
+              className="flex relative w-full max-w-md bg-white rounded-md first:mt-0 mt-4 px-2 shadow-md"
             >
               {/*THIS IS A INVISIBLE LAYER SO YOU CAN PRESS THE UPPER PART OF THE CARD AND FLY TO THE STORE LOCATION ON MAP*/}
               <div
                 className="absolute top-0 right-0 h-36 w-full bg-black z-10 opacity-0"
+
+                onClick={() => handleFly(store)}
               ></div>
               <div className="basis-1/2 relative text-center border-r-[1px] border-gray-300 py-2">
                 <div className="h-[7.5rem]  px-2 w-full rounded-t-md">

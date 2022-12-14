@@ -1,10 +1,10 @@
 import '../styles/globals.css'
-import type { AppProps } from 'next/app'
 import AppLayout from '../layout/AppLayout'
 import StoreLayout from '../layout/StoreLayout'
 import { AuthProvider } from '../context/AuthContext'
 import { MatterportProvider } from '../context/MatterportContext'
 import { StoreProvider } from '../context/StoreContext'
+import { MapProvider } from '../context/MapContext'
 const layouts: any = {
   L1: AppLayout,
   L2: StoreLayout,
@@ -17,9 +17,11 @@ export default function App({ Component, pageProps }: any) {
     <AuthProvider>
       <MatterportProvider>
         <StoreProvider >
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <MapProvider>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </MapProvider>
         </StoreProvider>
       </MatterportProvider>
     </AuthProvider>

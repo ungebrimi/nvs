@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useMemo } from "react";
+import { useMap } from "../../context/MapContext"
 //@ts-ignore
 import Map, { Marker } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
@@ -11,9 +12,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function MapComponent({ markers, stores, fly, setFly, mapLocation }: any) {
+export default function MapComponent({ markers, stores }: any) {
   const accessToken = process.env.MAPBOX_ACCESS_TOKEN as string;
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { fly, mapLocation, setFly } = useMap()
   const [selectedStore, setSelectedStore] = useState<any>(null);
   const [mapStyle, setMapStyle] = useState<string>("satellite-v9");
   const [enabled, setEnabled] = useState(false);

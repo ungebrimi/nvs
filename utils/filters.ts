@@ -1,7 +1,5 @@
 import { supabase } from "../lib/supabase";
 
-
-
 export async function getCityStoreTypes(cip: number) {
   let { data, error } = await supabase.rpc("get_city_store_types", {
     cip: cip,
@@ -54,32 +52,78 @@ export async function getFilters(cip: number) {
       options: [],
     },
   ];
-  const storeTypes = await getCityStoreTypes(cip).then((res) => {
-    if (res) return res.filter((v: any, i: any, a: any) => a.findIndex((t: any) => (t.marker_id === v.marker_id)) === i)
-  });
-  const brands = await getCityBrands(cip).then((res) => {
-    if (res) return res.filter((v: any, i: any, a: any) => a.findIndex((t: any) => (t.brand === v.brand)) === i)
-  });
-  const categories = await getCityProductCategories(cip).then((res) => {
-    if (res) return res.filter((v: any, i: any, a: any) => a.findIndex((t: any) => (t.category === v.category)) === i)
+
+  await getCityStoreTypes(cip).then((res: any) => {
+    res.map((option: any) => {
+      arr[0].options.push({
+        name: option.name,
+        value: option.name,
+        type: "store",
+        checked: false,
+        store_id: [option.store_id],
+      });
+    });
   });
 
-  if (storeTypes) {
-    storeTypes.forEach((type: any) => {
-      arr[0].options.push({ ...type, value: type.name, checked: false, type: "store" })
-    })
-  }
-  if (brands) {
-    brands.forEach((brand: any) => {
-      arr[1].options.push({ ...brand, name: brand.brand, value: brand.brand, checked: false, type: "brand" })
-    })
-  }
-  if (categories) {
-    categories.forEach((category: any) => {
-      arr[2].options.push({ ...category, name: category.category, value: category.category, checked: false, type: "product" })
-    })
-  }
-  return arr;
+  await getCityBrands(cip).then((res: any) => {
+    res.map((option: any) => {
+      arr[1].options.push({
+        name: option.brand,
+        value: option.brand,
+        type: "brand",
+        checked: false,
+        store_id: [option.storeid],
+      });
+    });
+  });
+
+  await getCityProductCategories(cip).then((res: any) => {
+    res.map((option: any) => {
+      arr[2].options.push({
+        name: option.category,
+        value: option.category,
+        type: "product",
+        checked: false,
+        store_id: [option.storeid],
+      });
+    });
+  });
+
+
+  arr[0].options = arr[0].options.filter(
+    (v: any, i: any, a: any) =>
+      a.findIndex((t: any) => {
+        if (t.name === v.name) {
+          t.store_id.push(v.store_id[0]);
+        }
+        return t.name === v.name;
+      }) === i
+  );
+
+  // for each time arrj.options.name is equal to arr.options.name, add the store_id to the store_id array
+  arr[1].options = arr[1].options.filter(
+    (v: any, i: any, a: any) =>
+      // if t.name and v.name are equal, add the v.store_id to the t.store_id array
+      a.findIndex((t: any) => {
+        if (t.name === v.name) {
+          t.store_id.push(v.store_id[0]);
+        }
+        return t.name === v.name;
+      }) === i
+  );
+
+  arr[2].options = arr[2].options.filter(
+    (v: any, i: any, a: any) =>
+      // if t.name and v.name are equal, add the v.store_id to the t.store_id array
+      a.findIndex((t: any) => {
+        if (t.name === v.name) {
+          t.store_id.push(v.store_id[0]);
+        }
+        return t.name === v.name;
+      }) === i
+  );
+
+  return arr
 }
 
 

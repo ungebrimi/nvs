@@ -1,10 +1,10 @@
 import React from 'react'
-import { useLayoutEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 const Chevron = ({ store }: any) => {
   const chevronRef = useRef<any>(null)
   // animate the chevron to indicate press to scroll down
-  useLayoutEffect(() => {
+  useEffect(() => {
     const chevron = chevronRef.current;
     const animate = () => {
       chevron.style.transform = "translateY(10px)";

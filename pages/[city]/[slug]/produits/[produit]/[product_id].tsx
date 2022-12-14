@@ -30,7 +30,7 @@ export async function getStaticProps({ params }: any) {
     props: {
       product: product[0],
       store: store[0]
-    }
+    },
   }
 }
 

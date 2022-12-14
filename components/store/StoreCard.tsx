@@ -17,7 +17,6 @@ const Storecard = ({ state, store }: any) => {
   const [description, setDescription] = useState<string>("");
   const notLegalString =
     "https://staging-virtualia.kinsta.cloud/wp-content/uploads/2021/04/default.jpg";
-
   const [hasLiked, setHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const { isAuth, user } = useAuthProvider();
@@ -73,6 +72,7 @@ const Storecard = ({ state, store }: any) => {
       handleDescription(store.description, setDescription);
     }
   }, [store]);
+
 
   return (
     <div

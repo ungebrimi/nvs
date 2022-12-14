@@ -11,6 +11,17 @@ export async function getStore(slug: any, city: any) {
   return stores_v3
 }
 
+export async function getStoreById(id: any) {
+  const { data: stores_v3, error } = await supabase
+    .from('stores_v3')
+    .select('*')
+    .eq("store_id", id)
+  if (error) {
+    throw error
+  }
+  return stores_v3
+}
+
 export const getMarkers = async () => {
   let { data, error } = await supabase.from("types_of_stores").select("marker_id, icon_url")
   if (error) {
@@ -31,6 +42,17 @@ export const getStoreBrands = async (store_id: any) => {
   return data;
 }
 
+export const addBrandNamesToStore = async (store_id: any) => {
+  let arr: string[] = []
+  const brands = await getStoreBrands(store_id)
+  if (brands) {
+    brands.map((brand: any) => {
+      arr.push(brand.brand)
+    })
+  }
+  return arr
+}
+
 export const getStoreProductCategories = async (store_id: any) => {
   let { data, error } = await supabase
     .from("product_table")
@@ -41,6 +63,17 @@ export const getStoreProductCategories = async (store_id: any) => {
     throw error
   }
   return data;
+}
+
+export const addProductCategoriesToStore = async (store_id: any) => {
+  let arr: string[] = []
+  const categories = await getStoreProductCategories(store_id)
+  if (categories) {
+    categories.map((category: any) => {
+      arr.push(category.product_category)
+    })
+  }
+  return arr
 }
 
 export const getStoreProductfilters = async (store_id: any) => {

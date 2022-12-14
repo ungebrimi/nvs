@@ -16,19 +16,19 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }: any) {
   const store: any = await getStore(params.slug, params.city)
-  return {
-    props: {
-      store: store[0]
+  if (store) {
+    return {
+      props: {
+        store: store[0],
+      },
     }
   }
 }
 
 
 export default function Contactez({ store }: any) {
-  // set the store to prevent the navbar not showing on refresh when store is lost
-  const { setStore } = useStore()
-  setStore(store)
 
+  if (!store) return <div>Loading...</div>
   return (
     <main className="overflow-hidden min-h-[90.3vh]">
       <div className="bg-warm-gray-50">
@@ -214,7 +214,7 @@ export default function Contactez({ store }: any) {
                     <span className="sr-only">Numéro de téléphone</span>
                   </dt>
 
-                  {store.phone && (
+                  {store.phone ? (
                     <dd className="flex text-white">
 
                       <svg
@@ -240,7 +240,7 @@ export default function Contactez({ store }: any) {
                       </a>
                     </dd>
 
-                  )}
+                  ) : null}
                   {store.email ? (
                     <>
                       <dt>

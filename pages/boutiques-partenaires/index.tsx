@@ -1,5 +1,4 @@
-import { Fragment, useState, useEffect, useRef, useLayoutEffect } from "react";
-import Image from "next/image";
+import { Fragment, useState, useEffect } from "react";
 import {
   Dialog,
   Disclosure,
@@ -9,12 +8,9 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import gsap from "gsap";
-import Link from "next/link";
 import { getStores } from "../../utils/app";
 import { getStoreLikes, getStoreFollowers } from "../../utils/like";
-import { getFilters } from "../../utils/filters";
-import { useStore } from "../../context/StoreContext"
+import BoutiqueCard from "../../components/store/BoutiqueCard";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -26,9 +22,52 @@ const sortOptions = [
   { name: "Le plus aimé", current: false },
 ];
 
+const uArray = (array: any) => {
+  var out = [];
+  for (var i = 0, len = array.length; i < len; i++)
+    if (out.indexOf(array[i]) === -1)
+      out.push(array[i]);
+  return out;
+}
+
 export async function getStaticProps() {
+  const arr = [
+    {
+      id: "type",
+      name: "Type de boutique",
+      options: [
+        {
+          value: "Toutes les boutiques",
+          label: "Toutes les boutiques",
+          checked: false,
+          type: "type"
+        }
+      ],
+      type: "type"
+    },
+    {
+      id: "pays",
+      name: "Pays",
+      options: [{ value: "France", label: "France", checked: false, type: "country" }],
+      type: "country"
+    },
+  ];
+
   const stores = await getStores().then(async (res: any) => {
     if (res) {
+      const uniqueTypes = res.filter((v: any, i: any, a: any) =>
+        v.store_type !== null &&
+        a.findIndex((t: any) => t.store_type === v.store_type) === i
+      )
+      uniqueTypes.unshift({ store_type: "Toutes les boutiques" });
+      arr[0].options = uniqueTypes.map((category: any) => {
+        return {
+          value: category.store_type,
+          label: category.store_type,
+          checked: false,
+          type: "type"
+        };
+      });
       const likes = await getStoreLikes(res.store_id)
       const followers = await getStoreFollowers(res.store_id)
       res.likes = likes
@@ -36,35 +75,85 @@ export async function getStaticProps() {
     }
     return res
   })
-  const filters = await getFilters(11898)
+
   return {
     props: {
-      filters: filters,
-      s: stores
-    }
+      s: stores,
+      f: arr,
+    },
+    // update weekly
+    revalidate: 604800,
   }
 }
 
-
-export default function Boutiques({ filters, s }: any) {
+export default function Boutiques({ f, s }: any) {
   const [open, setOpen] = useState<boolean>(false)
+  const filters = f
   const [stores, setStores] = useState<any>(s)
   const [activeFilters, setActiveFilters] = useState<any>([])
 
   useEffect(() => {
+    uArray(filters[0].options)
+  }, [filters])
+
+  useEffect(() => {
+    let typeOnly = false;
+    let countryOnly = false;
+    let typeAndCountry = false;
+
+    const storeType = activeFilters.filter(
+      (filter: any) => filter.type === "type"
+    );
+    const countryType = activeFilters.filter(
+      (filter: any) => filter.type === "country"
+    );
+
+    if (
+      storeType.length > 0 &&
+      countryType.length > 0
+    ) {
+      typeAndCountry = true;
+    } else if (storeType.length > 0) {
+      typeOnly = true;
+    } else if (countryType.length > 0) {
+      countryOnly = true;
+    }
+
     const filteredResults = s.filter((result: any) => {
       if (activeFilters.length === 0) {
         return result;
       }
-      return activeFilters.some(
-        (filter: any) =>
-          result.store_type.includes(filter.value) ||
-          result.country.includes(filter.value)
-      );
+      if (typeAndCountry) {
+        return activeFilters.some(
+          (filter: any) =>
+            result.store_type.includes(filter.value)
+        );
+      }
+      else if (typeOnly) {
+        return activeFilters.some(
+          (filter: any) =>
+            result.store_type.includes(filter.value)
+        );
+      } else if (countryOnly) {
+        return activeFilters.some(
+          (filter: any) =>
+            result.country === filter.value
+        );
+      }
     });
     setStores(filteredResults);
+  }, [activeFilters, s]);
 
-  }, [activeFilters, s, stores])
+  // removes those with the ugly default image when resetting filters
+  useEffect(() => {
+    if (
+      activeFilters.some(
+        (filter: any) => filter.value === "Toutes les boutiques"
+      )
+    ) {
+      setStores(s);
+    }
+  }, [activeFilters, s]);
 
   const handleCheck = (option: any) => {
     // set option.checked to true and push the option to activeFilters
@@ -77,6 +166,15 @@ export default function Boutiques({ filters, s }: any) {
       );
       setActiveFilters(newFilters);
     }
+  };
+
+  const handleRemove = (option: any) => {
+    const newFilters = activeFilters.filter(
+      (filter: any) => filter.value !== option.value
+    );
+    // set option.checked to false
+    option.checked = false;
+    setActiveFilters(newFilters);
   };
 
   const handleSort = (sortOption: any) => {
@@ -104,14 +202,6 @@ export default function Boutiques({ filters, s }: any) {
     }
   };
 
-  const handleRemove = (option: any) => {
-    const newFilters = activeFilters.filter(
-      (filter: any) => filter.value !== option.value
-    );
-    // set option.checked to false
-    option.checked = false;
-    setActiveFilters(newFilters);
-  };
 
   return (
     <div className="relative min-h-[91.5vh] overflow-hidden bg-warm-gray py-28">
@@ -184,7 +274,7 @@ export default function Boutiques({ filters, s }: any) {
                               {section.options?.map(
                                 (option: any, optionIdx: number) => (
                                   <div
-                                    key={option.value}
+                                    key={optionIdx}
                                     className="flex items-center"
                                   >
                                     <input
@@ -200,7 +290,7 @@ export default function Boutiques({ filters, s }: any) {
                                       htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
                                       className="ml-3 text-sm text-gray-500"
                                     >
-                                      {option.name}
+                                      {option.label}
                                     </label>
                                   </div>
                                 )
@@ -310,7 +400,7 @@ export default function Boutiques({ filters, s }: any) {
                             {section.options.map(
                               (option: any, optionIdx: number) => (
                                 <div
-                                  key={option.value}
+                                  key={optionIdx}
                                   className="flex items-center"
                                 >
                                   <input
@@ -324,9 +414,9 @@ export default function Boutiques({ filters, s }: any) {
                                   />
                                   <label
                                     htmlFor={`filter-${section.id}-${optionIdx}`}
-                                    className="ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900"
+                                    className="ml-3 whitespace-nowrap pr-6 text-sm text-gray-900"
                                   >
-                                    {option.name}
+                                    {option.label}
                                   </label>
                                 </div>
                               )
@@ -395,7 +485,7 @@ export default function Boutiques({ filters, s }: any) {
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="grid grid-cols-1 gap-y-6 sm:gap-y-16 gap-x-4 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-4">
             {stores.map((store: any, idx: number) => (
-              <Store store={store} key={idx} />
+              <BoutiqueCard store={store} key={idx} />
             ))}
           </div>
         </div>
@@ -404,63 +494,5 @@ export default function Boutiques({ filters, s }: any) {
   );
 }
 
-const Store = ({ store }: any) => {
-  const { setStore } = useStore()
-  const ref = useRef<any>(null);
-  useLayoutEffect(() => {
-    ref.current?.addEventListener("mouseenter", () => {
-      gsap.to(ref.current, {
-        opacity: 1,
-        y: -50,
-        duration: 0.5,
-        stagger: 0.1,
-      });
-    });
-    ref.current?.addEventListener("mouseleave", () => {
-      gsap.to(ref.current, {
-        y: 0,
-        duration: 0.5,
-        stagger: 0.1,
-      });
-    });
-  }, [ref]);
-
-  return (
-    <article key={store.store_id} className="group relative z-10">
-      <div className="aspect-w-2 aspect-h-1 w-full overflow-hidden rounded-2xl sm:aspect-w-2 sm:aspect-h-2">
-        <div className="absolute h-full w-full bg-vod flex flex-col justify-end items-center">
-          <h3 className="w-full text-xl uppercase text-center font-bold text-white">
-            {store.title}
-          </h3>
-          <span className="text-white">
-            {/*typesOfStore
-                ? typesOfStore[`${store.marker_id < 44 ? store.marker_id : 43}`]
-                  .name
-                : null*/}
-          </span>
-        </div>
-      </div>
-      <Link
-        href={`/${store.city}/${store.slug}`}
-        onClick={() => setStore(store)}
-      >
-        <div
-          ref={ref}
-          className="absolute z-1 rounded-2xl inset-0 shadow-2xl"
-        >
-          <div className="relative h-full w-full">
-            <Image
-              width={400}
-              height={500}
-              src={store.shop_image}
-              alt={store.title}
-              className="h-full w-full rounded-2xl object-cover object-center"
-            />
-          </div>
-        </div>
-      </Link>
-    </article>
-  );
-};
 
 Boutiques.layout = "L1"
