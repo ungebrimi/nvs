@@ -12,8 +12,6 @@ export async function getStaticProps() {
     const res = await getStores().then((res: any) => {
         if (res) {
             res.forEach(async (res: any) => {
-                res.likes = await getStoreLikes(res.store_id)
-                res.followers = await getStoreFollowers(res.store_id)
                 const brands = await getStoreBrands(res.store_id)
                 const categories = await getStoreProductCategories(res.store_id)
                 if (brands) {
@@ -35,7 +33,6 @@ export async function getStaticProps() {
                 filters: filters,
                 markers: markers
             },
-            revalidate: 10,
         }
     }
 }
@@ -56,8 +53,19 @@ const projects = [
 ];
 
 export default function Home({ stores, filters, markers }: any) {
-    const [filteredStores, setFilteredStores] = useState(stores)
+    const [filteredStores, setFilteredStores] = useState([])
     const [activeFilters, setActiveFilters] = useState<any>([])
+
+
+    useEffect(() => {
+        stores.forEach(async (store: any) => {
+            const likes = await getStoreLikes(store.store_id)
+            const followers = await getStoreFollowers(store.store_id)
+            store.likes = likes
+            store.followers = followers
+        })
+        setFilteredStores(stores)
+    }, [stores])
 
     const handleCheck = useCallback((option: any) => {
         option.checked = !option.checked;
@@ -184,14 +192,16 @@ export default function Home({ stores, filters, markers }: any) {
         if (brandAndCategory) {
             setFilteredStores(
                 stores.filter((store: any) => {
-                    return (
-                        brandType.some((brandAndCategory: any) =>
-                            store.brands.includes(brandAndCategory.value)
-                        ) &&
-                        categoryType.some((brandAndCategory: any) =>
-                            store.categories.includes(brandAndCategory.value)
-                        )
-                    );
+                    if (store.brands && store.categories !== undefined) {
+                        return (
+                            brandType.some((brandAndCategory: any) =>
+                                store.brands.includes(brandAndCategory.value)
+                            ) &&
+                            categoryType.some((brandAndCategory: any) =>
+                                store.categories.includes(brandAndCategory.value)
+                            )
+                        );
+                    }
                 })
             );
         }
@@ -239,7 +249,7 @@ export default function Home({ stores, filters, markers }: any) {
             </div>
             <div className="grid grid-cols-6 max-w-7xl mx-auto space-x-2 px-4 lg:px-0">
                 <MapComponent markers={markers} stores={filteredStores} />
-                <div className="lg:hidden col-span-6">
+                <div className="lg:hidden col-span-6 my-8">
                     <Filter filters={filters} activeFilters={activeFilters} handleRemove={handleRemove} handleCheck={handleCheck} />
                 </div>
                 <Stores stores={filteredStores} />

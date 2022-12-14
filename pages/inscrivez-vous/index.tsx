@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signUp, signInWithLinkedIn, signInWithGoogle } from "../../utils/auth";
+import { signUp, signInWithLinkedIn, signInWithGoogle, updateEmail } from "../../utils/auth";
 import Link from "next/link";
 //import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { useAuthProvider } from "../../context/AuthContext";
@@ -40,6 +40,7 @@ export default function Signup() {
           if (res.user) {
             setSuccess(true);
             setUser(res.user);
+            updateEmail(res.user.email)
           }
         });
       } catch (err: any) {

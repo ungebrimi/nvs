@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://virtualia.shop
+
+# Sitemaps
+Sitemap: https://virtualia.shop/sitemap.xml

@@ -2,7 +2,7 @@ import { useAuthProvider } from "../context/AuthContext";
 import { useState, useEffect } from "react"
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { BsBagCheck, BsBagCheckFill } from "react-icons/bs";
-import { likeStore, unlikeStore, followStore, unfollowStore, getStoreLikes, getStoreFollowers } from "../utils/like"
+import { likeStore, unlikeStore, followStore, unfollowStore } from "../utils/like"
 import Link from "next/link";
 
 export default function LikeButtons({ store }: any) {
@@ -25,7 +25,7 @@ export default function LikeButtons({ store }: any) {
         }
       })
     }
-  }, [store.likes, store.followers, setHasLiked, user])
+  }, [store, setHasLiked, user])
 
   const handleLike = async (uid: string, sid: number) => {
     if (hasLiked) {
@@ -50,8 +50,6 @@ export default function LikeButtons({ store }: any) {
       store.followers.push(user.id)
     }
   }
-
-
 
   return (
     <div>
@@ -111,7 +109,6 @@ export default function LikeButtons({ store }: any) {
             </div>
           )}
         </>
-
       ) : null}
     </div>
   );

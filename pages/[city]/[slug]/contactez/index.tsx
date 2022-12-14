@@ -5,6 +5,8 @@ import { getStore } from "../../../../utils/store";
 import { getStorePaths } from "../../../../utils/paths"
 import OpeningHours from "../../../../components/store/OpeningHours";
 import { useStore } from "../../../../context/StoreContext"
+import emailjs from "@emailjs/browser"
+import { useRef, useState } from "react";
 
 export async function getStaticPaths() {
   const storePaths = await getStorePaths()
@@ -31,6 +33,20 @@ export default function Contactez({ store }: any) {
   const { setStore } = useStore()
   if (store) {
     setStore(store)
+  }
+  const [didSend, setDidSend] = useState<boolean>(false)
+  const form = useRef<any>()
+
+  function sendEmail(e: any) {
+    e.preventDefault();
+    // these IDs from the previous steps
+    emailjs.sendForm('service_opj5yh7', 'template_9brzo9w', form.current, 'Zrsu5XoQuJGAxGnN1')
+      .then((result: any) => {
+        console.log(result.text);
+        setDidSend(true)
+      }, (error: any) => {
+        console.log('FAILED...', error);
+      });
   }
 
   if (!store) return <div>Loading...</div>
@@ -317,6 +333,7 @@ export default function Contactez({ store }: any) {
                 </h3>
                 <form
                   action="#"
+                  ref={form}
                   method="POST"
                   className="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8"
                 >

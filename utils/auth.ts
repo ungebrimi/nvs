@@ -79,6 +79,16 @@ export const updateUserInfo = async (values: any, uid: any) => {
   return user_table;
 };
 
+export const updateEmail = async (user: any) => {
+  const { data: user_table, error } = await supabase
+    .from('user_table')
+    .update({ email: user.email })
+    .eq('id', user.id)
+  if (error) {
+    return error
+  }
+  return user_table
+}
 
 
 export const signOut = async () => {
