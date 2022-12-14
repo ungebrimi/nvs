@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { getStores } from "../utils/app";
 import { getMarkers, getStoreBrands, getStoreProductCategories } from "../utils/store"
+import { getStoreLikes, getStoreFollowers } from '../utils/like';
 import Stores from "../components/home/Stores";
 import Filter from "../components/home/Filter";
 import MapComponent from '../components/home/Map';
@@ -11,6 +12,8 @@ export async function getStaticProps() {
     const res = await getStores().then((res: any) => {
         if (res) {
             res.forEach(async (res: any) => {
+                // res.likes = await getStoreLikes(res.store_id)
+                // res.followers = await getStoreFollowers(res.store_id)
                 const brands = await getStoreBrands(res.store_id)
                 const categories = await getStoreProductCategories(res.store_id)
                 if (brands) {
@@ -25,13 +28,14 @@ export async function getStaticProps() {
     })
     const markers = await getMarkers()
     const filters = await getFilters(11898)
-
-    return {
-        props: {
-            stores: res,
-            filters: filters,
-            markers: markers
-        },
+    if (res) {
+        return {
+            props: {
+                stores: res,
+                filters: filters,
+                markers: markers
+            },
+        }
     }
 }
 

@@ -2,28 +2,20 @@ import { useAuthProvider } from "../context/AuthContext";
 import { useState, useEffect } from "react"
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { BsBagCheck, BsBagCheckFill } from "react-icons/bs";
-import { likeStore, unlikeStore, getStoreLikes, getStoreFollowers, followStore, unfollowStore } from "../utils/like"
+import { likeStore, unlikeStore, followStore, unfollowStore, getStoreLikes, getStoreFollowers } from "../utils/like"
 import Link from "next/link";
 
 export default function LikeButtons({ store }: any) {
   const [hasLiked, setHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const { isAuth, user } = useAuthProvider();
-
   useEffect(() => {
-    async function getLikes(store: any) {
-      const likes: any = await getStoreLikes(store.store_id);
-      store.likes = likes
+    async function getLikesAndFollowers() {
+      store.likes = await getStoreLikes(store.store_id)
+      store.followers = await getStoreFollowers(store.store_id)
     }
-
-    async function getFollowers(store: any) {
-      const followers: any = await getStoreFollowers(store.store_id);
-      store.followers = followers
-    }
-    getLikes(store);
-    getFollowers(store);
-  }, [store, user])
-
+    getLikesAndFollowers()
+  }, [store])
 
   useEffect(() => {
     if (!store.likes) return

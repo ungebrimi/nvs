@@ -12,12 +12,17 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
-import { getStoreById } from '../../utils/store';
+import { getProductLikes } from '../../utils/like';
 
 export async function getStaticProps() {
   const products = await getProductsView()
   const p = await addImagesToProductsFeed(products)
-
+  if (p) {
+    p.forEach(async (product: any) => {
+      product.likes = await getProductLikes(p.product_id)
+      return product
+    })
+  }
   return {
     props: {
       p: p,
@@ -62,23 +67,8 @@ const Index = ({ p }: any) => {
   const [activeFilters, setActiveFilters] = useState<any>([]);
   const [filters, setFilters] = useState<any>(arr);
   const [sortOptions, setSortOptions] = useState<any>(sort);
-  const [store, setStore] = useState<any>([])
   const initialProducts = p;
 
-  const addStore = async (pid: any) => {
-    if (pid !== undefined) {
-      try {
-        const store = await getStoreById(pid)
-        return store
-      } catch (err: any) {
-        console.log(err.message)
-      }
-    }
-  }
-
-  useEffect(() => {
-    addStore(selectedProduct.product_id).then(res => setStore(res))
-  }, [selectedProduct])
 
   let PageSize = 10;
 
@@ -584,7 +574,6 @@ const Index = ({ p }: any) => {
               setOpen={setIsOpen}
               product={selectedProduct}
               id={selectedProduct.id}
-              store={store}
             />
           ) : null}
         </>

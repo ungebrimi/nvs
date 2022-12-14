@@ -34,19 +34,24 @@ export default function Login() {
       setError("S'il vous plaît, mettez une adresse email valide");
       return;
     }
-    await signInWithPassword(values).then((res: any) => {
-      if (res) {
-        setSession(res.session);
-        setUser(res.user);
-        setIsAuth(true);
+    console.log(user)
+
+    try {
+      await signInWithPassword(values).then((res: any) => {
         if (res.user) {
           setMessage("Vous êtes connecté");
+          setSession(res.session);
+          setUser(res.user);
+          setIsAuth(true);
+
+          setTimeout(() => {
+            Router.push("/");
+          }, 1000)
         }
-      }
-      setTimeout(() => {
-        Router.push("/");
-      }, 1000)
-    });
+      });
+    } catch (error: any) {
+      setError(error.message)
+    }
   };
 
   return (
@@ -178,7 +183,7 @@ export default function Login() {
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="bg-white px-2 text-gray-500">
-                    Je n{`&apos`}ai pas de compte?
+                    Je n{`'`}ai pas de compte?
                   </span>
                 </div>
               </div>

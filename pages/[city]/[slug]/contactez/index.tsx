@@ -21,12 +21,17 @@ export async function getStaticProps({ params }: any) {
       props: {
         store: store[0],
       },
+      revalidate: 1,
     }
   }
 }
 
 
 export default function Contactez({ store }: any) {
+  const { setStore } = useStore()
+  if (store) {
+    setStore(store)
+  }
 
   if (!store) return <div>Loading...</div>
   return (

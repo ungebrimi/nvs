@@ -20,7 +20,7 @@ export const signInWithPassword = async (values: any) => {
     password: values.password,
   })
   if (error) {
-    return error
+    throw error
   }
   return data
 }
@@ -30,7 +30,7 @@ export const signInWithGoogle = async () => {
     provider: "google",
   })
   if (error) {
-    return error
+    throw error
   }
   return data
 }
@@ -40,7 +40,7 @@ export const signInWithLinkedIn = async () => {
     provider: "linkedin",
   })
   if (error) {
-    return error
+    throw error
   }
   return data
 }

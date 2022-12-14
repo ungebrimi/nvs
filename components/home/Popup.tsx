@@ -3,6 +3,7 @@ import { Fragment } from "react";
 import { Dialog, Transition, RadioGroup, Tab } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { BiDetail } from "react-icons/bi";
+import { getStoreById } from '../../utils/store';
 //import ModelViewer from "./Modelviewer";
 import LikeProduct from "../store/LikeProduct";
 import Image from "next/image";
@@ -11,12 +12,29 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Popup({ open, setOpen, product, idx, store }: any) {
+export default function Popup({ open, setOpen, product }: any) {
   //const [displayModel, setDisplayModel] = useState(false);
+  const [store, setStore] = useState<any>([])
   const [displayedImage, setDisplayedImage] = useState<any>({
     type: "image",
     src: product.thumbnail,
   });
+  const addStore = async (pid: any) => {
+    if (pid !== undefined) {
+      try {
+        const store = await getStoreById(pid)
+        return store
+      } catch (err: any) {
+        console.log(err.message)
+      }
+    }
+  }
+
+  useEffect(() => {
+    addStore(product.product_id).then(res => setStore(res))
+  }, [product])
+
+
 
   const handleImage = (type: string, src: string) => {
     setDisplayedImage({ type, src });
@@ -336,14 +354,14 @@ export default function Popup({ open, setOpen, product, idx, store }: any) {
                             </RadioGroup>
                           </div>
                         )}
-                        {store.is_ecommerce && (
+                        {store && store.is_ecommerce ? (
                           <button
                             type="submit"
                             className="mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-600 py-3 px-8 text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
                           >
                             Add to bag
                           </button>
-                        )}
+                        ) : null}
                       </form>
                     </div>
                   </div>

@@ -7,6 +7,7 @@ import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
 import { getProductLikes } from '../../../../../utils/like'
 import LikeProduct from '../../../../../components/store/LikeProduct'
+import { useStore } from "../../../../../context/StoreContext"
 
 export async function getStaticPaths() {
   const paths = await getProductPaths()
@@ -31,6 +32,7 @@ export async function getStaticProps({ params }: any) {
       product: product[0],
       store: store[0]
     },
+    revalidate: 1,
   }
 }
 
@@ -39,6 +41,10 @@ function classNames(...classes: string[]) {
 }
 
 const Produit = ({ product, store }: any) => {
+  const { setStore } = useStore()
+  if (store) {
+    setStore(store)
+  }
   const [selectedColor, setSelectedColor] = useState()
   const [displayModel, setDisplayModel] = useState(false);
   const [displayedImage, setDisplayedImage] = useState<any>({

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useStore } from "../context/StoreContext";
 import { useAuthProvider } from "../context/AuthContext";
 import { signOut } from "../utils/auth"
+import { useRouter } from "next/router";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -13,7 +14,11 @@ function classNames(...classes: any) {
 export default function StoreNavbar() {
   const { store } = useStore();
   const { isAuth, userData } = useAuthProvider();
-
+  const router = useRouter()
+  const disconnect = () => {
+    signOut()
+    router.push("/")
+  }
   const data = [
     {
       text: "Revenir à l'accueil ",
@@ -131,7 +136,7 @@ export default function StoreNavbar() {
                                   active ? "bg-gray-100" : "",
                                   "block px-4 py-2 text-sm text-gray-700"
                                 )}
-                                onClick={() => signOut()}
+                                onClick={() => disconnect()}
                               >
                                 Se déconnecter
                               </button>
@@ -264,7 +269,7 @@ export default function StoreNavbar() {
                       as="a"
                       href="#"
                       className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
-                      onClick={() => signOut()}
+                      onClick={() => disconnect()}
                     >
                       Se déconnecter
                     </Disclosure.Button>

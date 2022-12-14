@@ -4,19 +4,19 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuthProvider } from "../context/AuthContext";
 import { signOut } from "../utils/auth";
-import { useRouter } from "next/router";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Example() {
+export default function AppNavbar() {
+
   const { isAuth, userData } = useAuthProvider();
-  const router = useRouter()
   const disconnect = () => {
     signOut()
-    router.push("/")
+    window.location.href = "/"
   }
+
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -101,7 +101,7 @@ export default function Example() {
                         <Menu.Item>
                           {({ active }) => (
                             <button
-                              onClick={() => signOut()}
+                              onClick={() => disconnect()}
                               className={classNames(
                                 active ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700 w-full text-left"
@@ -226,7 +226,7 @@ export default function Example() {
                 À propos
               </Link>
               <Link
-                href="/Connexion"
+                href="/connexion"
                 className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
                 Connexion
@@ -246,7 +246,7 @@ export default function Example() {
                       </Disclosure.Button>
                     </Link>
                     <Disclosure.Button
-                      onClick={() => signOut()}
+                      onClick={() => disconnect()}
                       className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
                     >
                       Se déconnecter

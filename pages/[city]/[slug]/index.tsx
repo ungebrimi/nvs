@@ -8,7 +8,7 @@ import { GiSoundOn, GiSoundOff } from "react-icons/gi"
 import { useMatterport } from '../../../context/MatterportContext'
 import SceneProducts from "../../../components/store/SceneProducts"
 import ProductList from '../../../components/store/ProductList'
-//import { useStore } from '../../../context/StoreContext'
+import { useStore } from '../../../context/StoreContext'
 import Chevron from '../../../components/store/Chevron'
 
 export async function getStaticPaths() {
@@ -32,12 +32,18 @@ export async function getStaticProps({ params }: any) {
         filters: productfilters,
         products: products,
       },
+      revalidate: 1,
     }
   }
 }
 
 
 const Store = ({ store, products, filters }: any) => {
+  const { setStore } = useStore()
+  if (store) {
+    setStore(store)
+  }
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const { setMpSdk, mpSdk, tags, hideTags, changeTagColor, preventTagAction } =
     useMatterport();
