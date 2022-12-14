@@ -9,13 +9,6 @@ export default function LikeButtons({ store }: any) {
   const [hasLiked, setHasLiked] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const { isAuth, user } = useAuthProvider();
-  useEffect(() => {
-    async function getLikesAndFollowers() {
-      store.likes = await getStoreLikes(store.store_id)
-      store.followers = await getStoreFollowers(store.store_id)
-    }
-    getLikesAndFollowers()
-  }, [store])
 
   useEffect(() => {
     if (!store.likes) return

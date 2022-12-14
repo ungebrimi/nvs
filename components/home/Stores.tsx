@@ -2,6 +2,7 @@ import Link from "next/link";
 import LikeButtons from "../LikeButtons";
 import Image from "next/image";
 import { useMap } from "../../context/MapContext";
+import { getStoreLikes, getStoreFollowers } from "../../utils/like";
 
 const Stores = ({ stores }: any) => {
   // get current day and time
@@ -58,11 +59,18 @@ const Stores = ({ stores }: any) => {
     setFly(true);
   };
 
+  // async function getLikesAndFollowers(store: any) {
+  //   store.likes = await getStoreLikes(store.store_id)
+  //   store.followers = await getStoreFollowers(store.store_id)
+  //   return store
+  // }
+
   return (
     <aside className="col-span-6 bg-neutral-50 lg:col-span-2 lg:h-[36rem] overflow-auto relative py-1">
       {stores &&
         stores.map((store: any) => {
           let isOpen = false;
+          //         getLikesAndFollowers(store)
           try {
             store.opening_hours[currentDay]?.open.forEach((time: any) => {
               time = time.split(":");
@@ -161,7 +169,7 @@ const Stores = ({ stores }: any) => {
           );
         })}
       {stores.length === 0 && (
-        <div className="flex flex-col justify-center items-center w-full h-full">
+        <div className="flex min-h-96 flex-col justify-center items-center w-full h-full">
           <h3 className="text-2xl font-bold text-gray-800 text-center">
             Aucun résultat
           </h3>

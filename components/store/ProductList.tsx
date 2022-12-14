@@ -289,7 +289,7 @@ export default function ProductList({ p, f, store }: any) {
                 <h2 id="product-heading" className="sr-only">
                   Products
                 </h2>
-                <div className="grid grid-cols-1 xs:grid-cols-2 xs:gap-x-2 gap-y-4 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3 lg:max-h-screen lg:overflow-y-scroll">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3 lg:max-h-screen lg:overflow-y-scroll">
                   {products &&
                     products.map((product: any) => {
                       let regex = /\/n/g;
@@ -326,19 +326,19 @@ export default function ProductList({ p, f, store }: any) {
                                 {description}
                               </p>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="flex flex-col justify-start xs:flex-row xs:justify-between">
                               <p className="text-xs md:text-base font-medium text-gray-900">
                                 {product.price ? product.price + " €" : null}
                               </p>
                               {product.tag_sid ? (
                                 <button
                                   onClick={() => flyToTag(product.tag_sid)}
-                                  className="text-xs md:text-sm text-vb hover:border-b-[1px]"
+                                  className="text-xs md:text-sm text-vb text-left mt-1 xs:mt-0"
                                 >
                                   Situer dans le magasin
                                 </button>
                               ) : (
-                                <button className="text-xs md:text-sm text-vb hover:border-b-[1px]">
+                                <button className="text-xs md:text-sm text-vb text-left mt-1 xs:mt-0">
                                   Disponible en magasin
                                 </button>
                               )}

@@ -34,8 +34,6 @@ export default function Popup({ open, setOpen, product }: any) {
     addStore(product.product_id).then(res => setStore(res))
   }, [product])
 
-
-
   const handleImage = (type: string, src: string) => {
     setDisplayedImage({ type, src });
   };

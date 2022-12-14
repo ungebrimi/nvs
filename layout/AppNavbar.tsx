@@ -225,18 +225,6 @@ export default function AppNavbar() {
               >
                 À propos
               </Link>
-              <Link
-                href="/connexion"
-                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-              >
-                Connexion
-              </Link>
-              <Link
-                href="/inscrivez-vous"
-                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
-              >
-                Créer un compte
-              </Link>
               {isAuth ? (
                 <div className="pb-3">
                   <div className=" space-y-1">
@@ -258,7 +246,22 @@ export default function AppNavbar() {
                     ) : (null)}
                   </div>
                 </div>
-              ) : null}{" "}
+              ) : (
+                <>
+                  <Link
+                    href="/connexion"
+                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                  >
+                    Connexion
+                  </Link>
+                  <Link
+                    href="/inscrivez-vous"
+                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                  >
+                    Créer un compte
+                  </Link>
+                </>
+              )}{" "}
             </div>
           </Disclosure.Panel>
         </>

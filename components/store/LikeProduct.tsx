@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { useAuthProvider } from '../../context/AuthContext'
 import { AiFillLike, AiOutlineLike } from 'react-icons/ai'
-import { incrementUserPoints, likeProduct, unLikeProduct, decrementUserPoints } from '../../utils/like'
+import { incrementUserPoints, likeProduct, unLikeProduct, decrementUserPoints, getProductLikes } from '../../utils/like'
 import Link from 'next/link'
 
 const LikeProduct = ({ product, store }: any) => {
-  const [productLikes, setProductLikes] = useState<any>(product.likes);
+  const [productLikes, setProductLikes] = useState<any>();
   const [likesProduct, setLikesProduct] = useState<boolean>(false);
-
   const { isAuth, user } = useAuthProvider();
+  useEffect(() => {
+    const checkLikes = async () => {
+      const likes = await getProductLikes(product.product_id);
+      if (likes && likes.length > 0) {
+        setLikesProduct(true);
+        setProductLikes(likes);
+      }
+    };
+    checkLikes();
+  }, [product])
+
   // checks if the user has liked or followed the store already
   useEffect(() => {
     if (isAuth) {

@@ -32,7 +32,8 @@ export async function getStaticProps({ params }: any) {
         filters: productfilters,
         products: products,
       },
-      revalidate: 1,
+      // give this a value when stores are more active
+      // revalidate: 60,
     }
   }
 }

@@ -12,8 +12,8 @@ export async function getStaticProps() {
     const res = await getStores().then((res: any) => {
         if (res) {
             res.forEach(async (res: any) => {
-                // res.likes = await getStoreLikes(res.store_id)
-                // res.followers = await getStoreFollowers(res.store_id)
+                res.likes = await getStoreLikes(res.store_id)
+                res.followers = await getStoreFollowers(res.store_id)
                 const brands = await getStoreBrands(res.store_id)
                 const categories = await getStoreProductCategories(res.store_id)
                 if (brands) {
@@ -35,6 +35,7 @@ export async function getStaticProps() {
                 filters: filters,
                 markers: markers
             },
+            revalidate: 10,
         }
     }
 }
@@ -57,6 +58,7 @@ const projects = [
 export default function Home({ stores, filters, markers }: any) {
     const [filteredStores, setFilteredStores] = useState(stores)
     const [activeFilters, setActiveFilters] = useState<any>([])
+
     const handleCheck = useCallback((option: any) => {
         option.checked = !option.checked;
         if (option.checked) {

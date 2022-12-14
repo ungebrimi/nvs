@@ -12,17 +12,10 @@ import {
 } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid"
-import { getProductLikes } from '../../utils/like';
 
 export async function getStaticProps() {
   const products = await getProductsView()
   const p = await addImagesToProductsFeed(products)
-  if (p) {
-    p.forEach(async (product: any) => {
-      product.likes = await getProductLikes(p.product_id)
-      return product
-    })
-  }
   return {
     props: {
       p: p,

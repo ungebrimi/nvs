@@ -20,19 +20,17 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }: any) {
   // turn params.product_id into a number
   const product_id = Number(params.product_id)
-  const likes = await getProductLikes(product_id)
   const store: any = await getStore(params.slug, params.city)
   const product: any = await getProduct(product_id).then(async (res: any) => {
     await addImagesToProduct(res[0])
     return res
   })
-  product[0].likes = likes
   return {
     props: {
       product: product[0],
       store: store[0]
     },
-    revalidate: 1,
+    revalidate: 10,
   }
 }
 
