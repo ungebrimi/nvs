@@ -47,7 +47,8 @@ export default function Signup() {
         setError(true);
       } finally {
         setTimeout(() => {
-        }, 5000);
+          window.location.href = "/";
+        }, 2000);
       }
     }
   };

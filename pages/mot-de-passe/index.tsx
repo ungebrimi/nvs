@@ -67,7 +67,7 @@ export default function ForgottenPassword() {
           >
             <input type="hidden" name="remember" defaultValue="true" />
             <div className="-space-y-px rounded-md shadow-sm">
-              <span className="text-gray-700 block pb-2 text-sm">
+              <span className="text-green-500 block pb-2 text-sm">
                 {message}
               </span>
               <div>

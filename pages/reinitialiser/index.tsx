@@ -106,7 +106,7 @@ export default function UpdatePassword() {
                 />
               </div>
             </div>
-            {message && <p className="text-red-500 text-sm">{message}</p>}
+            {message && <p className="text-green-500 text-sm">{message}</p>}
             <div>
               <button
                 type="submit"
