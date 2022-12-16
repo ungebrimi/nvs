@@ -10,6 +10,7 @@ import SceneProducts from "../../../components/store/SceneProducts"
 import ProductList from '../../../components/store/ProductList'
 import { useStore } from '../../../context/StoreContext'
 import Chevron from '../../../components/store/Chevron'
+import Breadcrumb from '../../../components/Breadcrumb'
 
 export async function getStaticPaths() {
   const storePaths = await getStorePaths()
@@ -44,7 +45,6 @@ const Store = ({ store, products, filters }: any) => {
   if (store) {
     setStore(store)
   }
-
   const [isPlaying, setIsPlaying] = useState<boolean>(false)
   const { setMpSdk, mpSdk, tags, hideTags, changeTagColor, preventTagAction } =
     useMatterport();
@@ -87,6 +87,15 @@ const Store = ({ store, products, filters }: any) => {
       }
     }
   }, [tags, preventTagAction, hideTags, mpSdk, store, products]);
+  let paths;
+  if (store) {
+    paths = [
+      {
+        href: `/${store.city}/${store.slug}`,
+        breadcrumb: `${store.title}`
+      },
+    ]
+  }
 
   if (!store) return <div>Loading...</div>
   return (
@@ -101,7 +110,10 @@ const Store = ({ store, products, filters }: any) => {
         />
         <meta name="keywords" content={store?.keywords_seo} />
       </Head>
-      <div className="relative min-h-[85.1vh]  max-w-[101rem] m-auto">
+      <div className="max-w-[92rem] hidden xl:block px-8 mt-8 mx-auto">
+        <Breadcrumb paths={paths} />
+      </div>
+      <div className="relative min-h-[85.1vh] max-w-[93rem] xl:px-8 m-auto">
         <section className="w-full xl:py-14 grid grid-cols-4 gap-4">
           <aside className="hidden xl:block xl:col-span-1">
             <SceneProducts products={products} store={store} />

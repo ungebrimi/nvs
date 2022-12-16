@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import { getProductPaths } from "../../../../../utils/paths"
-import { getProduct, addImagesToProduct, getImage } from '../../../../../utils/products'
+import { getProduct, addImagesToProduct } from '../../../../../utils/products'
 import { getStore } from "../../../../../utils/store"
 import { Disclosure, RadioGroup, Tab } from '@headlessui/react'
 import { MinusIcon, PlusIcon } from '@heroicons/react/24/outline'
 import Image from 'next/image'
-import { getProductLikes } from '../../../../../utils/like'
 import LikeProduct from '../../../../../components/store/LikeProduct'
 import { useStore } from "../../../../../context/StoreContext"
+import Breadcrumb from '../../../../../components/Breadcrumb'
 
 export async function getStaticPaths() {
   const paths = await getProductPaths()
@@ -58,11 +58,29 @@ const Produit = ({ product, store }: any) => {
 
   let regex = /\/n/g;
   let result = product.description?.replace(regex, "");
+  let path = product.name.toLowerCase().replace(/ /g, '-')
+  let id = product.product_id.toString()
 
+  let paths;
+  if (store && product) {
+    paths = [
+      {
+        href: `/${store.city}/${store.slug}`,
+        breadcrumb: `${store.title}`
+      },
+      {
+        href: `/${store.city}/${store.slug}/${path}/${id}`,
+        breadcrumb: `Produit - ${product.name}`
+      },
+    ]
+  }
 
   return (
-    <div className="min-h-[85.1vh]  max-w-[101rem]">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="min-h-[85.1vh] max-w-[101rem] overflow-hidden">
+      <div className="mx-auto max-w-2xl py-24 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="pb-8">
+          <Breadcrumb paths={paths} />
+        </div>
         <div className="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
           {/* Image gallery */}
           <Tab.Group as="div" className="flex flex-col-reverse">
@@ -310,48 +328,50 @@ const Produit = ({ product, store }: any) => {
                 </button>*/}
               </div>
             </form>
+            {product.characteristics && product.characteristics.length > 0 ? (
+              <section aria-labelledby="details-heading" className="mt-12">
+                <h2 id="details-heading" className="sr-only">
+                  Additional details
+                </h2>
 
-            <section aria-labelledby="details-heading" className="mt-12">
-              <h2 id="details-heading" className="sr-only">
-                Additional details
-              </h2>
+                <div className="divide-y divide-gray-200 border-t">
+                  {product.characteristics.map((detail: any) => (
+                    <Disclosure as="div" key={detail.name}>
+                      {({ open }) => (
+                        <>
+                          <h3>
+                            <Disclosure.Button className="group relative flex w-full items-center justify-between py-6 text-left">
+                              <span
+                                className={classNames(open ? 'text-vb' : 'text-gray-900', 'text-sm font-medium')}
+                              >
+                                {detail.title}
+                              </span>
+                              <span className="ml-6 flex items-center">
+                                {open ? (
+                                  <MinusIcon
+                                    className="block h-6 w-6 text-vb group-hover:text-vb"
+                                    aria-hidden="true"
+                                  />
+                                ) : (
+                                  <PlusIcon
+                                    className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
+                                    aria-hidden="true"
+                                  />
+                                )}
+                              </span>
+                            </Disclosure.Button>
+                          </h3>
+                          <Disclosure.Panel as="div" className="prose prose-sm pb-6">
+                            <p>{detail.value}</p>
+                          </Disclosure.Panel>
+                        </>
+                      )}
+                    </Disclosure>
+                  ))}
+                </div>
+              </section>
+            ) : null}
 
-              <div className="divide-y divide-gray-200 border-t">
-                {product.characteristics && product.characteristics.map((detail: any) => (
-                  <Disclosure as="div" key={detail.name}>
-                    {({ open }) => (
-                      <>
-                        <h3>
-                          <Disclosure.Button className="group relative flex w-full items-center justify-between py-6 text-left">
-                            <span
-                              className={classNames(open ? 'text-vb' : 'text-gray-900', 'text-sm font-medium')}
-                            >
-                              {detail.title}
-                            </span>
-                            <span className="ml-6 flex items-center">
-                              {open ? (
-                                <MinusIcon
-                                  className="block h-6 w-6 text-vb group-hover:text-vb"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <PlusIcon
-                                  className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </span>
-                          </Disclosure.Button>
-                        </h3>
-                        <Disclosure.Panel as="div" className="prose prose-sm pb-6">
-                          <p>{detail.value}</p>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                ))}
-              </div>
-            </section>
           </div>
         </div>
       </div>

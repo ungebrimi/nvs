@@ -3,6 +3,7 @@ import StoreCard from "./StoreCard";
 import { useMatterport } from "../../context/MatterportContext";
 import { useRouter } from "next/router";
 import Hovered from "./Hovered";
+import Popup from "../home/Popup";
 
 const SceneProducts = ({ products, store }: any) => {
   const [displayAdd, setDisplayAdd] = useState<boolean>(true);
@@ -38,10 +39,15 @@ const SceneProducts = ({ products, store }: any) => {
     <>
       {open ? (
         <>
-          {products.map((product: any) => {
-            let path = product.name.toLowerCase().replace(/ /g, '-')
+          {products.map((product: any, idx: number) => {
             if (product.tag_sid === clickedProduct) {
-              router.push(`/${store.city}/${store.slug}/produits/${path}/${product.product_id}`);
+              return (<Popup
+                open={open}
+                setOpen={setOpen}
+                product={product}
+                key={idx}
+              />
+              )
             }
           })}
         </>

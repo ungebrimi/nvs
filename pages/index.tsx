@@ -12,6 +12,8 @@ export async function getStaticProps() {
     const res = await getStores().then((res: any) => {
         if (res) {
             res.forEach(async (res: any) => {
+                //res.likes = await getStoreLikes(res.store_id)
+                //res.followers = await getStoreFollowers(res.store_id)
                 const brands = await getStoreBrands(res.store_id)
                 const categories = await getStoreProductCategories(res.store_id)
                 if (brands) {
@@ -226,7 +228,7 @@ export default function Home({ stores, filters, markers }: any) {
 
     return (
         <main className="bg-neutral-50 space-y-12">
-            <div className="px-4 mt-12 sm:px-6 text-center lg:px-0 text-gray-700">
+            <div className="px-4 mb-8 mt-12 max-w-7xl mx-auto sm:px-6 text-center lg:px-0 text-gray-700">
                 <h1 className="font-bold tracking-tight text-xl sm:text-2xl lg:text-3xl">
                     Bienvenue dans Virtualia Shop, votre centre commercial à ciel ouvert!
                 </h1>
@@ -236,13 +238,19 @@ export default function Home({ stores, filters, markers }: any) {
                     afin de faire vivre les centre-villes et être informé des derniers
                     arrivages.
                 </p>
-                <Link href="#comment" className="text-xs sm:text-sm underline">
+                <a className="text-xs sm:text-sm underline" href="#comment-ca-marche">
                     Comment ça marche?
-                </Link>
-                <i className="mt-4 block text-sm sm:text-base">
-                    Faîtes partager le concept autour de vous. Soutenez votre économie
+                </a>
+                <i className="mt-4 block mb-4 text-sm sm:text-base">
+                    Faîtes partager le concept autour de vous, rejoignez-nous sur <a href="https://www.instagram.com/virtualia.shop/" target="_blank" rel="noreferrer"><span className="text-vol"><strong>Instagram</strong></span></a> et soutenez votre économie
                     locale!
                 </i>
+                <p className="text-sm mt-2 sm:text-base">
+                    <span className="text-vol"><i>Actualités! </i></span>{" "}<br></br>
+                    Bientôt disponible des produits en réalité augmentée chez Atelier Chez Soi, Bensimon, Bacchini, People Shoes.. les stories pour suivre l{"'"}actualité de vos boutiques préférées, l{"'"}eReservation pour du click and collect sur tous les produits éligibles chez nos partenaires.
+                    <br />
+                    En janvier, nous mettons en place la livraison à domicile. 🤩<br />
+                    Enfin petit rappel, likez les produits et les boutiques qui vous plaisent, ou appuyez sur le panier orange pour être notifié de leurs nouveaux produits. Chaque point de fidélité collecté ce sont des lots et du cashback à empocher!</p>
             </div>
             <div className="hidden lg:block">
                 <Filter filters={filters} activeFilters={activeFilters} handleRemove={handleRemove} handleCheck={handleCheck} />
