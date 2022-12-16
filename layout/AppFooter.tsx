@@ -54,7 +54,7 @@ const Footer = () => {
           href="https://virtualia.ai/"
           rel="noreferrer"
           target="_blank"
-          className="cursor-pointer hover:text-gray-400 text-center max-w-md xl:max-w-7xl transition-ease duration-200 font-medium text-base"
+          className="cursor-pointer hover:text-gray-400 text-center max-w-md xl:max-w-7xl transition-ease duration-200 text-base"
         >
           Virtualia Interactive Technologies
         </a>

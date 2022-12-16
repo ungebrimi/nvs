@@ -43,19 +43,19 @@ export default function AppNavbar() {
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-2">
                   <Link
                     href="/boutiques-partenaires"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Boutiques partenaires
                   </Link>
                   <Link
                     href="/produits-disponibles"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Produits disponibles
                   </Link>
                   <Link
                     href="/a-propos"
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     À propos
                   </Link>
@@ -209,19 +209,19 @@ export default function AppNavbar() {
             <div className="space-y-1 pt-2 pb-3">
               <Link
                 href="/boutiques-partenaires"
-                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
                 Magasins partenaires
               </Link>
               <Link
                 href="/produits-disponibles"
-                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
                 Produits disponibles
               </Link>
               <Link
                 href="/a-propos"
-                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
               >
                 À propos
               </Link>
@@ -229,18 +229,18 @@ export default function AppNavbar() {
                 <div className="pb-3">
                   <div className=" space-y-1">
                     <Link href="/profil">
-                      <Disclosure.Button className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+                      <Disclosure.Button className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
                         Mon profil
                       </Disclosure.Button>
                     </Link>
                     <Disclosure.Button
                       onClick={() => disconnect()}
-                      className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                      className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
                     >
                       Se déconnecter
                     </Disclosure.Button>
                     {userData && userData.points ? (
-                      <Disclosure.Button className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
+                      <Disclosure.Button className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700">
                         {userData.points + " points"}
                       </Disclosure.Button>
                     ) : (null)}
@@ -250,13 +250,13 @@ export default function AppNavbar() {
                 <>
                   <Link
                     href="/connexion"
-                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
                   >
                     Connexion
                   </Link>
                   <Link
                     href="/inscrivez-vous"
-                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                    className="block border-l-4 border-transparent pt-2 pl-3 pr-4 text-sm  text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
                   >
                     Créer un compte
                   </Link>

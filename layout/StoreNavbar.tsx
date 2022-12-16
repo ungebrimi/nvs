@@ -44,7 +44,7 @@ export default function StoreNavbar() {
         >
           {({ open }) => (
             <>
-              <div className="mx-auto max-w-[92rem] px-1">
+              <div className="mx-auto px-6 max-w-[92rem]">
                 <div className="flex h-16 justify-between">
                   <div className="flex items-center">
                     <div className="flex flex-shrink-0 gap-2 items-center">
@@ -67,7 +67,7 @@ export default function StoreNavbar() {
                         {store.title}
                       </h2>
                     </div>
-                    <p className="sm:hidden text-md font-medium text-gray-100">
+                    <p className="sm:hidden text-md text-gray-100">
                       Bienvenue chez{" "}
                       <span className="capitalize text-accent">{store.title}</span>,
                       un magasin 100% immersif à {store.city}
@@ -79,7 +79,7 @@ export default function StoreNavbar() {
                         <Link
                           key={idx}
                           href={item.link}
-                          className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                          className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm  text-gray-500 hover:border-gray-300 hover:text-gray-700"
                         >
                           {item.text}
                         </Link>
@@ -87,7 +87,7 @@ export default function StoreNavbar() {
                       {store && store.matterport_url_vr && (
                         <Link
                           href={`/${store.city}/${store.slug}/vr`}
-                          className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                          className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm text-gray-500 hover:border-gray-300 hover:text-gray-700"
                         >
                           Visite en réalité virtuelle
                         </Link>
@@ -246,7 +246,7 @@ export default function StoreNavbar() {
                     <Link
                       key={idx}
                       href={item.link}
-                      className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                      className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm  text-gray-100"
                     >
                       {item.text}
                     </Link>
@@ -254,7 +254,7 @@ export default function StoreNavbar() {
                   {store && store.matterport_url_vr && (
                     <Link
                       href={`/${store.city}/${store.slug}/vr`}
-                      className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                      className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm text-gray-100"
                     >
                       Visite en réalité virtuelle
                     </Link>
@@ -263,14 +263,14 @@ export default function StoreNavbar() {
                     <div className="mt-3 space-y-1 ">
                       <Link
                         href="/profil"
-                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm text-gray-100"
                       >
                         Mon profil
                       </Link>
                       <Disclosure.Button
                         as="a"
                         href="#"
-                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm text-gray-100"
                         onClick={() => disconnect()}
                       >
                         Se déconnecter
@@ -280,7 +280,7 @@ export default function StoreNavbar() {
                         <Disclosure.Button
                           as="a"
                           href="#"
-                          className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                          className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm  text-gray-100"
                         >
                           {userData?.points && userData.points > 0 ? (userData?.points + " points") : null}
                         </Disclosure.Button>
@@ -290,13 +290,13 @@ export default function StoreNavbar() {
                     <>
                       <Link
                         href="/connexion"
-                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm  text-gray-100"
                       >
                         Connexion
                       </Link>
                       <Link
                         href="/inscrivez-vous"
-                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm font-medium text-gray-100"
+                        className="block border-l-4 border-transparent py-2 pl-3 pr-4 text-sm text-gray-100"
                       >
                         Créer un compte
                       </Link>

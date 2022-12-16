@@ -70,14 +70,14 @@ const Produit = ({ product, store }: any) => {
       },
       {
         href: `/${store.city}/${store.slug}/${path}/${id}`,
-        breadcrumb: `Produit - ${product.name}`
+        breadcrumb: `Produit - ${product.name} - ${product.brand}`
       },
     ]
   }
 
   return (
-    <div className="min-h-[85.1vh] max-w-[101rem] overflow-hidden">
-      <div className="mx-auto max-w-2xl py-24 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="min-h-[85.1vh] overflow-hidden">
+      <div className="mx-auto  xl:max-w-[92rem] max-w-2xl py-24 px-4 sm:py-12 sm:px-6 lg:max-w-7xl lg:px-8">
         <div className="pb-8">
           <Breadcrumb paths={paths} />
         </div>
@@ -85,7 +85,7 @@ const Produit = ({ product, store }: any) => {
           {/* Image gallery */}
           <Tab.Group as="div" className="flex flex-col-reverse">
             {/* Image selector */}
-            <div className="mx-auto mt-6 hidden w-full max-w-2xl sm:block lg:max-w-none">
+            <div className="mx-auto mt-6 w-full max-w-2xl sm:block lg:max-w-none">
               <Tab.List className="grid grid-cols-4 gap-6">
                 {product.images.map((image: any) => (
                   <Tab
@@ -180,7 +180,7 @@ const Produit = ({ product, store }: any) => {
 
           {/* Product info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{product.name}</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">{product.name} - {product.brand}</h1>
 
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>

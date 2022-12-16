@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useMatterport } from "../../context/MatterportContext";
-import { useState, Fragment, useEffect } from "react";
+import { useState, Fragment, useMemo } from "react";
 import { Dialog, Disclosure, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
@@ -21,7 +21,7 @@ export default function ProductList({ p, f, store }: any) {
 
   const { flyToTag } = useMatterport();
 
-  useEffect(() => {
+  useMemo(() => {
     let both = false;
     if (activeFilters.length >= 1) {
       // check if active filters contains type === "brand" and type ="category"
@@ -289,7 +289,7 @@ export default function ProductList({ p, f, store }: any) {
                 <h2 id="product-heading" className="sr-only">
                   Products
                 </h2>
-                <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3 lg:max-h-screen lg:overflow-y-scroll">
+                <div className="grid grid-cols-2 gap-x-2 gap-y-4 sm:gap-x-6 sm:gap-y-10 lg:gap-x-8 xl:grid-cols-3">
                   {products &&
                     products.map((product: any) => {
                       let regex = /\/n/g;
