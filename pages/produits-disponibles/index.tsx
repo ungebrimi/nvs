@@ -63,7 +63,7 @@ const Index = ({ p }: any) => {
   const initialProducts = p;
 
 
-  let PageSize = 10;
+  let PageSize = 12;
 
   const infiniteScroll = (data: any, limit: number, page: any) => {
     const ending = limit * page;
@@ -72,9 +72,9 @@ const Index = ({ p }: any) => {
 
   // useInifitescroll on product and set it to currentProducts
   useEffect(() => {
-    const currentProducts = infiniteScroll(products, 10, currentPage);
+    const currentProducts = infiniteScroll(products, PageSize, currentPage);
     setCurrentProducts(currentProducts);
-  }, [currentPage, products]);
+  }, [currentPage, products, PageSize]);
 
   const handleClick = (product: any) => {
     setSelectedProduct(product);
@@ -332,14 +332,13 @@ const Index = ({ p }: any) => {
         <div className="bg-warm-gray">
           <div className="mx-auto max-w-7xl py-16 px-4 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              Produits disponibles
+              {products.length} produits disponibles
             </h1>
             <p className="mt-4 max-w-xl text-gray-700">
-              Voir une collection de produits de nos boutiques partenaires.
+              Voici un échantillon de produits dans nos boutiques partenaires.
             </p>
           </div>
         </div>
-
         {/* Filters */}
         <section aria-labelledby="filter-heading">
           <h2 id="filter-heading" className="sr-only">
