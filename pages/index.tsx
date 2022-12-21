@@ -35,6 +35,7 @@ export async function getStaticProps() {
                 filters: filters,
                 markers: markers
             },
+            revalidate: 10,
         }
     }
 }

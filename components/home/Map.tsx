@@ -17,26 +17,34 @@ export default function MapComponent({ markers, stores }: any) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { fly, mapLocation, setFly } = useMap()
   const [selectedStore, setSelectedStore] = useState<any>(null);
-  const [mapStyle, setMapStyle] = useState<string>("satellite-v9");
+  const [mapStyle, setMapStyle] = useState<string>("");
   const [enabled, setEnabled] = useState(false);
   const [loading, setLoading] = useState(true);
   const mapRef = useRef<any>();
 
+  const handleToggle = () => {
+    let status = !enabled
+    localStorage.setItem("enabled", JSON.stringify(status));
+    setEnabled(status);
+  }
+
   useEffect(() => {
-    const enabled = localStorage.getItem("enabled");
+    // get the value of enabled from localstorage
+    const enabled = JSON.parse(localStorage.getItem("enabled") as string);
+    setEnabled(enabled)
     if (enabled) {
-      setEnabled(JSON.parse(enabled));
-      setMapStyle(JSON.parse(enabled) ? "satellite-v9" : "streets-v11");
-      setLoading(false);
+      setMapStyle("satellite-v9")
+      setLoading(false)
     } else {
-      localStorage.setItem("enabled", JSON.stringify(true));
-      setLoading(false);
+      setMapStyle("streets-v11")
+      setLoading(false)
     }
-  }, []);
+    console.log(enabled)
+  }, [])
 
   useEffect(() => {
     if (fly) {
-      mapRef.current.flyTo({
+      mapRef?.current.flyTo({
         center: [mapLocation.longitude, mapLocation.latitude],
         zoom: 21,
       });
@@ -55,14 +63,9 @@ export default function MapComponent({ markers, stores }: any) {
     zoom: 16,
   };
 
-  useEffect(() => {
-    localStorage.setItem("enabled", JSON.stringify(enabled));
-    localStorage.setItem("mapStyle", JSON.stringify(mapStyle));
-    setMapStyle(enabled ? "satellite-v9" : "streets-v11");
-  }, [enabled, mapStyle]);
 
   useEffect(() => {
-    if (mapRef.current && enabled) {
+    if (enabled) {
       setTimeout(() => {
         mapRef.current.flyTo({
           center: [1.3554498062642149, 44.01753922616064],
@@ -120,7 +123,7 @@ export default function MapComponent({ markers, stores }: any) {
         >
           <Switch
             checked={enabled}
-            onChange={setEnabled}
+            onChange={handleToggle}
             className={classNames(
               enabled ? "bg-vb" : "bg-gray-200",
               "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"

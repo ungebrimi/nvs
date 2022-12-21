@@ -45,7 +45,6 @@ export async function decrementStaticEditions(
   store_id: number,
   newEditions: any
 ) {
-  console.log(store_id, newEditions);
   let { data: static_points, error } = await supabase
     .from("static_points")
     .update({ editions: newEditions })
@@ -57,7 +56,7 @@ export async function decrementStaticEditions(
 export async function decrementDynamicEditions(unique_key: string) {
   let { data: dynamic_points, error } = await supabase
     .from("dynamic_points")
-    .update({ editions: 0 })
+    .update({ editions: 0, claimed: true })
     .eq("unique_key", unique_key);
   if (error) console.error(error);
   return dynamic_points;

@@ -52,7 +52,6 @@ const QR = ({ qrCodes, qr }: any) => {
 
   useEffect(() => {
     userClaimedQrCodes.map((code: any) => {
-      console.log(code.unique_key)
       if (code.unique_key === qr) {
         setClaimedBefore(true)
         setMessage("Vous avez déjà réclamé ce code")
