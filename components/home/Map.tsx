@@ -24,6 +24,11 @@ export default function MapComponent({ markers, stores }: any) {
 
   const handleToggle = () => {
     let status = !enabled
+    if (status) {
+      setMapStyle("satellite-v9")
+    } else {
+      setMapStyle("streets-v11")
+    }
     localStorage.setItem("enabled", JSON.stringify(status));
     setEnabled(status);
   }
