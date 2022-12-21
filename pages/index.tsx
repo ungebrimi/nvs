@@ -57,7 +57,7 @@ const projects = [
 export default function Home({ stores, filters, markers }: any) {
     const [filteredStores, setFilteredStores] = useState([])
     const [activeFilters, setActiveFilters] = useState<any>([])
-
+    const [readMore, setReadMore] = useState<boolean>(false)
 
     useEffect(() => {
         stores.forEach(async (store: any) => {
@@ -227,30 +227,56 @@ export default function Home({ stores, filters, markers }: any) {
     }, [activeFilters, stores]);
 
     return (
-        <main className="bg-neutral-50 space-y-12">
-            <div className="px-4 mb-8 mt-12 max-w-7xl mx-auto sm:px-6 text-center lg:px-0 text-gray-700">
+        <main className="bg-neutral-50 space-y-6">
+            <div className="px-4 mb-4 mt-12 max-w-7xl mx-auto sm:px-6 text-center lg:px-0 text-gray-700">
                 <h1 className="font-bold tracking-tight text-xl sm:text-2xl lg:text-3xl">
                     Bienvenue dans Virtualia Shop, votre centre commercial à ciel ouvert!
                 </h1>
-                <p className="text-sm mt-2 sm:text-base">
-                    Plus que cela, c{`'`}est une communauté de boutiques 100% immersives pour vous inciter à acheter près de chez vous,{" "}
-                    <br className="hidden lg:block" />
-                    afin de faire vivre les centre-villes et être informé des derniers
-                    arrivages.
-                </p>
-                <a className="text-xs sm:text-sm underline" href="#comment-ca-marche">
-                    Comment ça marche?
-                </a>
-                <i className="mt-4 block mb-4 text-sm sm:text-base">
-                    Faîtes partager le concept autour de vous, rejoignez-nous sur <a href="https://www.instagram.com/virtualia.shop/" target="_blank" rel="noreferrer"><span className="text-vol"><strong>Instagram</strong></span></a> et soutenez votre économie
-                    locale!
-                </i>
-                <p className="text-sm mt-2 sm:text-base">
-                    <span className="text-vol"><i>Actualités! </i></span>{" "}<br></br>
-                    Bientôt disponible des produits en réalité augmentée chez Atelier Chez Soi, Bensimon, Bacchini, People Shoes.. les stories pour suivre l{"'"}actualité de vos boutiques préférées, l{"'"}eReservation pour du click and collect sur tous les produits éligibles chez nos partenaires.
-                    <br />
-                    En janvier, nous mettons en place la livraison à domicile. 🤩<br />
-                    Enfin petit rappel, likez les produits et les boutiques qui vous plaisent, ou appuyez sur le panier orange pour être notifié de leurs nouveaux produits. Chaque point de fidélité collecté ce sont des lots et du cashback à empocher!</p>
+                <button onClick={() => setReadMore(!readMore)} className="text-sm mt-4 sm:text-base bg-vol font-medium rounded-full text-white px-3 py-2 md:hidden">en savoir plus</button>
+                {readMore && (
+                    <div className="md:hidden">
+                        <p className="text-sm mt-2 sm:text-base">
+                            Plus que cela, c{`'`}est une communauté de boutiques 100% immersives pour vous inciter à acheter près de chez vous,{" "}
+                            <br className="hidden lg:block" />
+                            afin de faire vivre les centre-villes et être informé des derniers
+                            arrivages.
+                        </p>
+                        <a className="text-xs sm:text-sm underline" href="#comment-ca-marche">
+                            Comment ça marche?
+                        </a>
+                        <i className="mt-4 block mb-4 text-sm sm:text-base">
+                            Faîtes partager le concept autour de vous, rejoignez-nous sur <a href="https://www.instagram.com/virtualia.shop/" target="_blank" rel="noreferrer"><span className="text-vol"><strong>Instagram</strong></span></a> et soutenez votre économie
+                            locale!
+                        </i>
+                        <p className="text-sm mt-2 sm:text-base">
+                            <span className="text-vol"><i>Actualités! </i></span>{" "}<br></br>
+                            Bientôt disponible des produits en réalité augmentée chez Atelier Chez Soi, Bensimon, Bacchini, People Shoes.. les stories pour suivre l{"'"}actualité de vos boutiques préférées, l{"'"}eReservation pour du click and collect sur tous les produits éligibles chez nos partenaires.
+                            <br />
+                            En janvier, nous mettons en place la livraison à domicile. 🤩<br />
+                            Enfin petit rappel, likez les produits et les boutiques qui vous plaisent, ou appuyez sur le panier orange pour être notifié de leurs nouveaux produits. Chaque point de fidélité collecté ce sont des lots et du cashback à empocher!</p>
+                    </div>
+                )}
+                <div className="hidden md:block">
+                    <p className="text-sm mt-2 sm:text-base">
+                        Plus que cela, c{`'`}est une communauté de boutiques 100% immersives pour vous inciter à acheter près de chez vous,{" "}
+                        <br className="hidden lg:block" />
+                        afin de faire vivre les centre-villes et être informé des derniers
+                        arrivages.
+                    </p>
+                    <a className="text-xs sm:text-sm underline" href="#comment-ca-marche">
+                        Comment ça marche?
+                    </a>
+                    <i className="mt-4 block mb-4 text-sm sm:text-base">
+                        Faîtes partager le concept autour de vous, rejoignez-nous sur <a href="https://www.instagram.com/virtualia.shop/" target="_blank" rel="noreferrer"><span className="text-vol"><strong>Instagram</strong></span></a> et soutenez votre économie
+                        locale!
+                    </i>
+                    <p className="text-sm mt-2 sm:text-base">
+                        <span className="text-vol"><i>Actualités! </i></span>{" "}<br></br>
+                        Bientôt disponible des produits en réalité augmentée chez Atelier Chez Soi, Bensimon, Bacchini, People Shoes.. les stories pour suivre l{"'"}actualité de vos boutiques préférées, l{"'"}eReservation pour du click and collect sur tous les produits éligibles chez nos partenaires.
+                        <br />
+                        En janvier, nous mettons en place la livraison à domicile. 🤩<br />
+                        Enfin petit rappel, likez les produits et les boutiques qui vous plaisent, ou appuyez sur le panier orange pour être notifié de leurs nouveaux produits. Chaque point de fidélité collecté ce sont des lots et du cashback à empocher!</p>
+                </div>
             </div>
             <div className="hidden lg:block">
                 <Filter filters={filters} activeFilters={activeFilters} handleRemove={handleRemove} handleCheck={handleCheck} />

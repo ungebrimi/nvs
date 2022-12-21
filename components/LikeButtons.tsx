@@ -1,5 +1,5 @@
 import { useAuthProvider } from "../context/AuthContext";
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { AiFillLike, AiOutlineLike } from "react-icons/ai";
 import { BsBagCheck, BsBagCheckFill } from "react-icons/bs";
 import { likeStore, unlikeStore, followStore, unfollowStore } from "../utils/like"
@@ -63,7 +63,7 @@ export default function LikeButtons({ store }: any) {
                   className="flex items-center gap-1"
                 >
                   <AiFillLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               ) : (
                 <button
@@ -71,7 +71,7 @@ export default function LikeButtons({ store }: any) {
                   className="flex items-center gap-1"
                 >
                   <AiOutlineLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               )}
               {isFollowing ? (
@@ -80,7 +80,7 @@ export default function LikeButtons({ store }: any) {
                   className="flex items-center gap-1"
                 >
                   <BsBagCheckFill className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               ) : (
                 <button
@@ -88,7 +88,7 @@ export default function LikeButtons({ store }: any) {
                   onClick={() => handleFollow(user.id, store.store_id)}
                 >
                   <BsBagCheck className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               )}
             </div>
@@ -97,13 +97,13 @@ export default function LikeButtons({ store }: any) {
               <Link href="/connexion">
                 <button className="flex items-center gap-1">
                   <AiOutlineLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               </Link>
               <Link href="/connexion">
                 <button className="flex items-center gap-1">
                   <BsBagCheck className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               </Link>
             </div>
