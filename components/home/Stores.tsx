@@ -1,31 +1,11 @@
-import { useEffect, useState } from "react"
+// import { useEffect, useState } from "react"
+// import { getStoreLikes, getStoreFollowers } from "../../utils/like";
 import Link from "next/link";
 import LikeButtons from "../LikeButtons";
 import Image from "next/image";
 import { useMap } from "../../context/MapContext";
-import { getStoreLikes, getStoreFollowers } from "../../utils/like";
 
 const Stores = ({ stores }: any) => {
-  const [newStores, setNewStores] = useState([])
-  const getLikesAndFollowers = async (store: any) => {
-    const likes = await getStoreLikes(store.store_id);
-    const followers = await getStoreFollowers(store.store_id);
-    return { likes, followers };
-  }
-
-  useEffect(() => {
-    if (stores.length == 0) return
-    if (stores) {
-      const getLikesAndFollowersForAllStores = async () => {
-        const storesWithLikesAndFollowers: any = await Promise.all(stores.map(async (store: any) => {
-          const likesAndFollowers = await getLikesAndFollowers(store);
-          return { ...store, ...likesAndFollowers };
-        }))
-        setNewStores(storesWithLikesAndFollowers)
-      }
-      getLikesAndFollowersForAllStores();
-    }
-  }, [stores])
 
   // get current day and time
   const today = new Date();
@@ -81,12 +61,10 @@ const Stores = ({ stores }: any) => {
     setFly(true);
   };
 
-
-
   return (
     <aside className="col-span-6 bg-neutral-50 lg:col-span-2 lg:h-[36rem] overflow-auto relative py-1">
-      {newStores &&
-        newStores.map((store: any) => {
+      {stores &&
+        stores.map((store: any) => {
           let isOpen = false;
           try {
             store.opening_hours[currentDay]?.open.forEach((time: any) => {
@@ -197,3 +175,24 @@ const Stores = ({ stores }: any) => {
 };
 
 export default Stores
+
+  // const [newStores, setNewStores] = useState([])
+  // // const getLikesAndFollowers = async (store: any) => {
+  // //   const likes = await getStoreLikes(store.store_id);
+  // //   const followers = await getStoreFollowers(store.store_id);
+  // //   return { likes, followers };
+  // // }
+  // //
+  // // useEffect(() => {
+  // //   if (stores.length == 0) return
+  // //   if (stores) {
+  // //     const getLikesAndFollowersForAllStores = async () => {
+  // //       const storesWithLikesAndFollowers: any = await Promise.all(stores.map(async (store: any) => {
+  // //         const likesAndFollowers = await getLikesAndFollowers(store);
+  // //         return { ...store, ...likesAndFollowers };
+  // //       }))
+  // //       setNewStores(storesWithLikesAndFollowers)
+  // //     }
+  // //     getLikesAndFollowersForAllStores();
+  // //   }
+  // // }, [stores])

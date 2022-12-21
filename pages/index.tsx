@@ -12,16 +12,8 @@ export async function getStaticProps() {
     const res = await getStores().then((res: any) => {
         if (res) {
             res.forEach(async (res: any) => {
-                //res.likes = await getStoreLikes(res.store_id)
-                //res.followers = await getStoreFollowers(res.store_id)
-                const brands = await getStoreBrands(res.store_id)
-                const categories = await getStoreProductCategories(res.store_id)
-                if (brands) {
-                    res.brands = brands.map((b) => b.brand)
-                }
-                if (categories) {
-                    res.categories = categories.map((c) => c.product_category)
-                }
+                res.likes = await getStoreLikes(res.store_id)
+                res.followers = await getStoreFollowers(res.store_id)
             })
         }
         return res
@@ -59,16 +51,32 @@ export default function Home({ stores, filters, markers }: any) {
     const [filteredStores, setFilteredStores] = useState([])
     const [activeFilters, setActiveFilters] = useState<any>([])
     const [readMore, setReadMore] = useState<boolean>(false)
-
+    const addBrandsAndCategories = (store: any) => {
+        store.brands = [];
+        store.categories = [];
+        getStoreBrands(store.store_id).then((res) => {
+            if (res) {
+                res.forEach((brand: any) => {
+                    store.brands.push(brand.brand);
+                });
+            }
+        });
+        getStoreProductCategories(store.store_id).then((res) => {
+            if (res) {
+                res.forEach((category: any) => {
+                    store.categories.push(category.product_category);
+                });
+            }
+        });
+    };
+    // use the function on each store
     useEffect(() => {
-        stores.forEach(async (store: any) => {
-            const likes = await getStoreLikes(store.store_id)
-            const followers = await getStoreFollowers(store.store_id)
-            store.likes = likes
-            store.followers = followers
-        })
-        setFilteredStores(stores)
-    }, [stores])
+        if (stores) {
+            stores.forEach((store: any) => {
+                addBrandsAndCategories(store);
+            });
+        }
+    }, [stores]);
 
     const handleCheck = useCallback((option: any) => {
         option.checked = !option.checked;

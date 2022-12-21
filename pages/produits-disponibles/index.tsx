@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect, useMemo, useState, Fragment } from 'react'
 import { getProductsView, addImagesToProductsFeed } from '../../utils/products'
 import Popup from '../../components/home/Popup';
 import Image from 'next/image'
@@ -16,10 +16,27 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid"
 export async function getStaticProps() {
   const products = await getProductsView()
   const p = await addImagesToProductsFeed(products)
-  return {
-    props: {
-      p: p,
-    },
+  if (products) {
+    const categories = products.map((product: any) => product.product_category);
+    const brands = products.map((product: any) => product.brand);
+    const sortedBrands = brands.sort()
+    const sortedCategories = categories.sort()
+    const uniqueCategories = sortedCategories.filter((v: any, i: any, a: any) =>
+      v !== null &&
+      a.findIndex((t: any) => t === v) === i
+    )
+    const uniqueBrands = sortedBrands.filter((v: any, i: any, a: any) =>
+      v !== null &&
+      a.findIndex((t: any) => t === v) === i
+    )
+
+    return {
+      props: {
+        p: p,
+        brands: uniqueBrands,
+        categories: uniqueCategories
+      },
+    }
   }
 }
 
@@ -50,7 +67,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Index = ({ p }: any) => {
+const Index = ({ p, categories, brands }: any) => {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<any>(p)
@@ -61,8 +78,6 @@ const Index = ({ p }: any) => {
   const [filters, setFilters] = useState<any>(arr);
   const [sortOptions, setSortOptions] = useState<any>(sort);
   const initialProducts = p;
-
-
   let PageSize = 12;
 
   const infiniteScroll = (data: any, limit: number, page: any) => {
@@ -81,42 +96,30 @@ const Index = ({ p }: any) => {
     setIsOpen(true);
   };
 
-  const uArray = (array: any) => {
-    var out = [];
-    for (var i = 0, len = array.length; i < len; i++)
-      if (out.indexOf(array[i]) === -1)
-        out.push(array[i]);
-    return out;
-  }
-
   useEffect(() => {
-    const brands = products.map((product: any) => product.brand);
-    const categories = products.map((product: any) => product.product_category);
-    // sort brands in alphabetical order
-    const sortedBrands = brands.sort();
-    // sort categories in alphabetical order
-    const sortedCategories = categories.sort();
-    const uniqueBrands = uArray(sortedBrands)
-    const uniqueCategories = uArray(sortedCategories)
-    uniqueBrands.forEach((brand: any) => {
-      filters[0].options.push({
-        name: brand,
-        value: brand,
-        checked: false,
-        type: "brand",
+    if (filters[1].options.length < categories.length) {
+      categories.forEach((category: any) => {
+        filters[1].options.push({
+          name: category,
+          value: category,
+          checked: false,
+          type: "category",
+        });
       });
-    });
-    uniqueCategories.forEach((category: any) => {
-      filters[1].options.push({
-        name: category,
-        value: category,
-        checked: false,
-        type: "category",
+    }
+    if (filters[0].options.length < categories.length) {
+      brands.forEach((brand: any) => {
+        filters[0].options.push({
+          name: brand,
+          value: brand,
+          checked: false,
+          type: "brand",
+        });
       });
-    });
-  }, [products, filters])
+    }
+  }, [brands, filters, categories])
 
-  useEffect(() => {
+  useMemo(() => {
     let both = false;
     if (activeFilters.length >= 1) {
       // check if active filters contains type === "brand" and type ="category"
@@ -204,9 +207,6 @@ const Index = ({ p }: any) => {
         return option;
       });
     });
-  };
-
-  useEffect(() => {
     if (sortOptions[0].current) {
       setProducts(initialProducts);
     }
@@ -216,7 +216,7 @@ const Index = ({ p }: any) => {
     if (sortOptions[2].current) {
       setProducts([...products].sort((a, b) => b.price - a.price));
     }
-  }, [sortOptions, initialProducts, products]);
+  };
 
   return (
     <div className="bg-warm-gray">
