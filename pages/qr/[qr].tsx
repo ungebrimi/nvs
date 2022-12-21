@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useAuthProvider } from '../../context/AuthContext'
 import {
   getQrCodes,
+  getDynamicQrCodes,
   claimPoints,
   updateUserPoints,
   decrementStaticEditions,
@@ -46,9 +47,11 @@ const QR = ({ qrCodes, qr }: any) => {
     }
   }, [user])
 
-  useEffect(() => {
-
-  }, [userClaimedQrCodes, qr])
+  const handleForgottenLogin = () => {
+    setRedirectBackToClaimPoints(true)
+    setSlug(router.asPath)
+    router.push('/connexion')
+  }
 
   useEffect(() => {
     userClaimedQrCodes.map((code: any) => {
@@ -184,7 +187,7 @@ const QR = ({ qrCodes, qr }: any) => {
                       Vous devez être connecté pour réclamer les points
                     </p>
                     <button
-                      //onClick={() => handleForgottenLogin()}
+                      onClick={() => handleForgottenLogin()}
                       className="mt-4 inline-flex items-center rounded-md border border-transparent bg-accent px-4 py-2 text-sm font-medium text-white shadow-sm hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2"
                     >
                       <Link href="/connexion">Se connecter</Link>

@@ -2,7 +2,6 @@ import { signInWithPassword, signInWithGoogle, signInWithLinkedIn } from "../../
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { BsGoogle, BsLinkedin } from "react-icons/bs";
-
 //@ts-ignore
 import isEmail from "validator/lib/isEmail";
 import Link from "next/link";
@@ -18,6 +17,8 @@ export default function Login() {
     setUser,
     setSession,
     user,
+    slug,
+    redirectBackToClaimPoints
   } = useAuthProvider();
   //const [captchaToken, setCaptchaToken] = useState();
   //const captcha = useRef<any>();
@@ -43,7 +44,9 @@ export default function Login() {
           setSession(res.session);
           setUser(res.user);
           setIsAuth(true);
-
+          if (redirectBackToClaimPoints) {
+            Router.push(slug);
+          }
           setTimeout(() => {
             Router.push("/");
           }, 1000)

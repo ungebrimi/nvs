@@ -4,7 +4,7 @@ export async function getStaticQrCodes() {
   let { data: static_points, error } = await supabase
     .from("static_points")
     .select("*");
-  if (error) console.error(error);
+  if (error) throw error;
   return static_points;
 }
 
@@ -12,7 +12,9 @@ export async function getDynamicQrCodes() {
   let { data: dynamic_points, error } = await supabase
     .from("dynamic_points")
     .select("*");
-  if (error) console.error(error);
+  if (error) {
+    throw error
+  }
   return dynamic_points;
 }
 
