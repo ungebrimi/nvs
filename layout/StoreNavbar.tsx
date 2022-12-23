@@ -5,8 +5,6 @@ import Link from "next/link";
 import { useStore } from "../context/StoreContext";
 import { useAuthProvider } from "../context/AuthContext";
 import { signOut } from "../utils/auth"
-import { useRouter } from "next/router";
-import Breadcrumb from "../components/Breadcrumb";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -15,11 +13,12 @@ function classNames(...classes: any) {
 export default function StoreNavbar() {
   const { store } = useStore();
   const { isAuth, userData } = useAuthProvider();
-  const router = useRouter()
+
   const disconnect = () => {
     signOut()
-    router.push("/")
+    window.location.href = "/"
   }
+
   const data = [
     {
       text: "Revenir à l'accueil ",

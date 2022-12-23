@@ -69,7 +69,7 @@ const Produit = ({ product, store }: any) => {
         breadcrumb: `${store.title}`
       },
       {
-        href: `/${store.city}/${store.slug}/${path}/${id}`,
+        href: `/${store.city}/${store.slug}/produits/${path}/${id}`,
         breadcrumb: `Produit - ${product.name} - ${product.brand}`
       },
     ]
