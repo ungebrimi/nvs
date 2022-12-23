@@ -5,6 +5,7 @@ import { AuthProvider } from '../context/AuthContext'
 import { MatterportProvider } from '../context/MatterportContext'
 import { StoreProvider } from '../context/StoreContext'
 import { MapProvider } from '../context/MapContext'
+import { Analytics } from '@vercel/analytics/react';
 const layouts: any = {
   L1: AppLayout,
   L2: StoreLayout,
@@ -20,6 +21,7 @@ export default function App({ Component, pageProps }: any) {
           <MapProvider>
             <Layout>
               <Component {...pageProps} />
+              <Analytics />;
             </Layout>
           </MapProvider>
         </StoreProvider>
