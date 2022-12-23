@@ -147,7 +147,7 @@ const Storecard = ({ state, store }: any) => {
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg"
                 >
                   <AiFillLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               ) : (
                 <button
@@ -155,7 +155,7 @@ const Storecard = ({ state, store }: any) => {
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg"
                 >
                   <AiOutlineLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               )}
               {isFollowing ? (
@@ -164,7 +164,7 @@ const Storecard = ({ state, store }: any) => {
                   className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg"
                 >
                   <BsBagCheckFill className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               ) : (
                 <button
@@ -172,7 +172,7 @@ const Storecard = ({ state, store }: any) => {
                   onClick={() => handleFollow(user.id, store.store_id)}
                 >
                   <BsBagCheck className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               )}
             </div>
@@ -181,13 +181,13 @@ const Storecard = ({ state, store }: any) => {
               <Link href="/connexion">
                 <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
                   <AiOutlineLike className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.likes.length}</span>
+                  <span className="text-gray-500">{store?.likes.length + store?.likes_inf}</span>
                 </button>
               </Link>
               <Link href="/connexion">
                 <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg">
                   <BsBagCheck className="text-xl text-vol" />
-                  <span className="text-gray-500">{store?.followers.length}</span>
+                  <span className="text-gray-500">{store?.followers.length + store?.followers_inf}</span>
                 </button>
               </Link>
             </div>
